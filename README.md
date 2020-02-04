@@ -1,1 +1,1 @@
-# nn_for_gw
+# Neural Network For Gravitational Waves
