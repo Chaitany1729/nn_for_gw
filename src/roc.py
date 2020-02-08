@@ -18,7 +18,7 @@ def roc_curve(multi_labels, y_score, n_class):
     P = np.count_nonzero(y_labels)
     N = y_labels.size - P
     #threshold = np.array([0.50, 0.70, 0.80, 0.90, 0.95, 0.96, 0.99, 0.9999, 0.999999, 1])
-    threshold = np.array(range(0,1000,10))
+    threshold = np.array(range(0,1000))
     threshold = threshold /1000
     
     
