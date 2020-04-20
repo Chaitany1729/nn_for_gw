@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 25 13:24:58 2020
+
+@author: chaitanya
+"""
+
+
+
 import pylab 
 import numpy 
 from pycbc.waveform import get_td_waveform
@@ -5,14 +15,16 @@ from pycbc.types import TimeSeries
 from pycbc.types import real_same_precision_as
 from generate_waveforms import generate_noise
 from pycbc.filter import matchedfilter
-from pycbc.psd import interpolate, inverse_spectrum_truncation
 
 mass = 36 
-hp, hc = get_td_waveform(approximant='SEOBNRv4_opt', mass1=mass, mass2=mass, delta_t=1/4096,delta_f = 0.25, f_lower = 20, distance=100)
-
- 
+hp, hc = get_td_waveform(approximant='SEOBNRv4_opt', mass1=mass, mass2=mass, delta_t=1/4096,delta_f = 0.25, f_lower = 20, distance=100) 
 merger_time = (1/4096) * hp.numpy().argmax() 
+
 snr = 20
+
+
+
+#hp = hp*(Amplitude/hp.numpy().argmax().max)
 
 pylab.figure(figsize=(10,5)) 
 pylab.plot(hp.sample_times,hp) 
@@ -28,11 +40,8 @@ pylab.xlabel('Time (s)')
 pylab.ylabel('Strain')
 
 
-psd = noise.psd(4)
-psd = interpolate(psd, noise.delta_f)
-hp.resize(len(psd))
-sigma = matchedfilter.sigma(hp, psd = psd, low_frequency_cutoff=20)
-Amplitude = snr/(sigma**2)
+sigma = matchedfilter.sigma(hp, psd = noise.psd(1/1.3536021150033046), low_frequency_cutoff=20)
+Amplitude = snr/sigma
 
 merger_time = 69
 merger_index = int(69/noise.delta_t)
@@ -61,3 +70,6 @@ pylab.xlabel('Time (s)')
 pylab.ylabel('Strain')
 pylab.title('Zoomed View') 
 pylab.legend()
+
+
+

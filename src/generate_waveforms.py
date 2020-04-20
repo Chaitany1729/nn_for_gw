@@ -17,6 +17,7 @@ import pycbc.psd, pycbc.noise
 from pycbc.types import TimeSeries
 from numpy import pi 
 from pycbc.waveform import get_td_waveform
+import matplotlib.pyplot as plt
 
 def generate_SineGaussianBlip(fc, bw): 
     
@@ -62,7 +63,13 @@ def generate_noise(time):
     ts = pycbc.noise.noise_from_psd(tsamples, delta_t, psd, seed=127) 
     return ts
 
-def generate_Whistle():
-    return
+def generate_Whistle(duration, min_position):
+        t = np.linspace(0, duration, duration*4096)
+        omega = f_lower + 2*pi*(bw/tc**2)*(t - tc*duration)**2
+        whistle = np.sin(omega*t)
+        waveform = TimeSeries(whistle, delta_t=1/4096)
+        return waveform
+    
+
     
 
