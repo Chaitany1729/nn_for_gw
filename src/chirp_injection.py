@@ -8,7 +8,14 @@ from pycbc.filter import matchedfilter
 from pycbc.psd import interpolate, inverse_spectrum_truncation
 
 mass = 36 
-hp, hc = get_td_waveform(approximant='SEOBNRv4_opt', mass1=mass, mass2=mass, delta_t=1/4096,delta_f = 0.25, f_lower = 20, distance=100)
+
+f_min = 20
+time_duration = 128
+f_sample = 4096
+delta_t = 1/f_sample
+delta_f = 1/time_duration
+
+hp, hc = get_td_waveform(approximant='SEOBNRv4_opt', mass1=mass, mass2=mass, delta_t= delta_t, f_lower = f_min, distance=100)
 
  
 merger_time = (1/4096) * hp.numpy().argmax() 
@@ -20,7 +27,7 @@ pylab.title('Generated Waveform')
 pylab.xlabel('Time (s)')
 pylab.ylabel('Strain')
 
-noise = generate_noise(128) 
+noise = generate_noise(time_duration, delta_f, delta_t) 
 pylab.figure(figsize=(10,5)) 
 pylab.plot(noise.sample_times,noise) 
 pylab.title('Noise')
@@ -29,8 +36,8 @@ pylab.ylabel('Strain')
 
 
 psd = noise.psd(4)
-psd = interpolate(psd, noise.delta_f)
-hp = interpolate(psd, noise.delta_f)
+psd = interpolate(psd, hp.delta_f)
+
 sigma = matchedfilter.sigma(hp, psd = psd, low_frequency_cutoff=20)
 Amplitude = snr/(sigma**2)
 
