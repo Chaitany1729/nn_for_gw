@@ -53,12 +53,9 @@ def generare_Impulse(duration, position):
     waveform = TimeSeries(impulse, delta_t=1/4096)
     return waveform
  
-def generate_noise(time, delta_f, delta_t): 
-    flow = 30 
-    delta_f = delta_f
+def generate_noise(time, delta_f, delta_t, f_min): 
     flen = int(2048/delta_f) +1 
-    psd = pycbc.psd.aLIGOZeroDetHighPower(flen, delta_f, flow)
-    delta_t = delta_t 
+    psd = pycbc.psd.aLIGOZeroDetHighPower(flen, delta_f, f_min)
     tsamples = int(time / delta_t) 
     ts = pycbc.noise.noise_from_psd(tsamples, delta_t, psd, seed=127) 
     return ts
