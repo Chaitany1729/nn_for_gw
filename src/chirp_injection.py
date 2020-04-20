@@ -30,22 +30,28 @@ pylab.ylabel('Strain')
 
 psd = noise.psd(4)
 psd = interpolate(psd, noise.delta_f)
-hp.resize(len(psd))
+hp = interpolate(psd, noise.delta_f)
 sigma = matchedfilter.sigma(hp, psd = psd, low_frequency_cutoff=20)
 Amplitude = snr/(sigma**2)
+
+
+hp *= Amplitude
 
 merger_time = 69
 merger_index = int(69/noise.delta_t)
 start_index = merger_index - len(hp)
 waveform = TimeSeries(numpy.zeros(len(noise)), delta_t=noise.delta_t, \
         dtype=real_same_precision_as(noise))
+
+
 waveform[start_index:merger_index] = hp
 
 signal = noise + waveform
 
 pylab.figure(figsize=(10,5)) 
-pylab.plot(waveform.sample_times,waveform,label='Signal')
-pylab.plot(signal.sample_times,signal,label='Signal + Noise')
+pylab.plot(signal.sample_times,signal,label='Waveform + Noise')
+pylab.plot(waveform.sample_times,waveform,label='Waveform')
+
 pylab.legend() 
 pylab.xlabel('Time (s)')
 pylab.ylabel('Strain')
