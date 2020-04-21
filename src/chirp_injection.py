@@ -6,6 +6,7 @@ from pycbc.types import real_same_precision_as
 from generate_waveforms import generate_noise
 from pycbc.filter import matchedfilter
 from pycbc.psd import interpolate, inverse_spectrum_truncation
+from pycbc.filter import matched_filter
 
 mass = 36 
 
@@ -21,6 +22,7 @@ noise = generate_noise(time_duration, delta_f, delta_t, f_min)
  
 merger_time = (1/4096) * hp.numpy().argmax() 
 snr = 20
+
 
 pylab.figure(figsize=(10,5)) 
 pylab.plot(hp.sample_times,hp) 
@@ -47,13 +49,13 @@ hp *= Amplitude
 
 hp.resize(hp_size)
 merger_time = 69
-merger_index = int(69/noise.delta_t)
-start_index = merger_index - len(hp)
+merger_index = int(69/delta_t) +1 
+start_index = merger_index + len(hp)
 waveform = TimeSeries(numpy.zeros(len(noise)), delta_t=delta_t, \
         dtype=real_same_precision_as(noise))
 
 
-waveform[start_index:merger_index] = hp
+waveform[merger_index :start_index] = hp
 
 signal = noise + waveform
 
@@ -76,3 +78,22 @@ pylab.xlabel('Time (s)')
 pylab.ylabel('Strain')
 pylab.title('Zoomed View') 
 pylab.legend()
+
+hp.resize(time_duration*f_sample)
+snr = matched_filter(hp, signal,
+                     psd=psd, low_frequency_cutoff=20)
+
+
+
+pylab.figure(figsize=[10, 4])
+pylab.plot(snr.sample_times, abs(snr))
+pylab.ylabel('Signal-to-noise')
+pylab.xlabel('Time (s)')
+pylab.show()
+
+peak = abs(snr).numpy().argmax()
+snrp = snr[peak]
+time = snr.sample_times[peak]
+
+print("We found a signal at {}s with SNR {}".format(time, 
+                                                    abs(snrp)))
