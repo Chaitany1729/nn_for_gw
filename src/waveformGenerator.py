@@ -12,9 +12,8 @@ import pycbc.psd, pycbc.noise
 from pycbc.types import TimeSeries
 from numpy import pi 
 from pycbc.waveform import get_td_waveform
-import matplotlib.pyplot as plt
-from pycbc.psd import interpolate, inverse_spectrum_truncation
-import random
+
+
 
 class waveformGenerator(object):
     
@@ -64,29 +63,12 @@ class waveformGenerator(object):
         waveform = TimeSeries(whistle, delta_t=1/4096)
         return waveform
     
-    def generate_Noise(duration, delta_f, delta_t): 
-        flow = 30 
-        delta_f = delta_f
+    def generate_Noise(duration, delta_f, delta_t, f_min): 
         flen = int(2048/delta_f) +1 
-        psd = pycbc.psd.aLIGOZeroDetHighPower(flen, delta_f, flow)
-        delta_t = delta_t 
-        tsamples = int(time / delta_t) 
+        psd = pycbc.psd.aLIGOZeroDetHighPower(flen, delta_f, f_min)
+        tsamples = int(duration / delta_t) 
         ts = pycbc.noise.noise_from_psd(tsamples, delta_t, psd, seed=127) 
         return ts
-        
-class synthesizer():
 
-    def data_GWChirp():
-        m1 = random.randrange(10, 40, 1)
-        m2 = random.randrange(10, 40, 1)
-        SNR = random.randrange(10000, 100000, 1)/1000
-        signal = waveformGenerator.generate_GWChirp(m1, m2)
-        psd = noise.psd(4)
-        psd = interpolate(psd, noise.delta_f )
-        signal.resize(len(noise))
-        signal = signal.cyclic_time_shift(signal.start_time)
-        sigmasq = matchedfilter.sigmasq(signal, psd , low_frequency_cutoff=30, high_frequency_cutoff=1024)
-        Amplitude = SNR/sigmasq
-        signal *= Amplitude
         
         

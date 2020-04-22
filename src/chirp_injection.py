@@ -5,7 +5,7 @@ from pycbc.types import TimeSeries
 from pycbc.types import real_same_precision_as
 from generate_waveforms import generate_noise
 from pycbc.filter import matchedfilter
-from pycbc.psd import interpolate, inverse_spectrum_truncation
+from pycbc.psd import interpolate
 from pycbc.filter import matched_filter
 
 mass = 36 
@@ -22,20 +22,6 @@ noise = generate_noise(time_duration, delta_f, delta_t, f_min)
  
 merger_time = (1/4096) * hp.numpy().argmax() 
 snr = 20
-
-
-pylab.figure(figsize=(10,5)) 
-pylab.plot(hp.sample_times,hp) 
-pylab.title('Generated Waveform')
-pylab.xlabel('Time (s)')
-pylab.ylabel('Strain')
-
-
-pylab.figure(figsize=(10,5)) 
-pylab.plot(noise.sample_times,noise) 
-pylab.title('Noise')
-pylab.xlabel('Time (s)')
-pylab.ylabel('Strain')
 
 hp_size = len(hp)
 hp.resize(time_duration*f_sample)
@@ -97,3 +83,8 @@ time = snr.sample_times[peak]
 
 print("We found a signal at {}s with SNR {}".format(time, 
                                                     abs(snrp)))
+''''
+from synthesizer import GWsynthesizer
+hp, hc = get_td_waveform(approximant='SEOBNRv4_opt', mass1=mass, mass2=mass, delta_t= delta_t, f_lower = 25, distance=100)
+scaled, amp = GWsynthesizer.scale(hp, noise, 20)'''
+
