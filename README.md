@@ -3,14 +3,12 @@
 
 The gravitational wave (GW) signals are feeble and are deeply embedded in the noisy data recorded by the LIGO detectors. Thus, computationally extensive techniques like matched-filtering are required to identify them. We wish to make use of recent advancements in recurrent neural networks (RNNs) to build a tool which successfully identifies GW signals while distinguishing them from other noise transients.
 
-##Preliminaries 
+## Preliminaries 
 
 1. GW Data Analysis Tools
-
 The data analysis tools which cover the plotting methods, spectrograms, matched filtering and significance testing. These tutorials are completed for PyCBC and GWpy python modules. The practised code can be found [here](https://github.com/Chaitany1729/trac2019/tree/master/ligo_tutorials). Also, you can find the tutorials link [here](https://github.com/gwastro/PyCBC-Tutorials).
 
 2. Neural Networks
-
 For Neural Networks, following tutorials are worked out:
 
     * Image Classification on MNIST Data Set: This tutorial is for basic hands-on with the neural network, roc plots and effect of noise on the classification.
