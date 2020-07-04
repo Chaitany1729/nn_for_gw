@@ -6,9 +6,11 @@ The gravitational wave (GW) signals are feeble and are deeply embedded in the no
 ## Preliminaries 
 
 1. GW Data Analysis Tools
+
 The data analysis tools which cover the plotting methods, spectrograms, matched filtering and significance testing. These tutorials are completed for PyCBC and GWpy python modules. The practised code can be found [here](https://github.com/Chaitany1729/trac2019/tree/master/ligo_tutorials). Also, you can find the tutorials link [here](https://github.com/gwastro/PyCBC-Tutorials).
 
 2. Neural Networks
+
 For Neural Networks, following tutorials are worked out:
 
     * Image Classification on MNIST Data Set: This tutorial is for basic hands-on with the neural network, roc plots and effect of noise on the classification.
